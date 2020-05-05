@@ -9,6 +9,7 @@
     firmwareSize = 128;
     populateFirmwareCommands = "${config.system.build.installBootLoader} ${config.system.build.toplevel} -d ./firmware";
     populateRootCommands = "mkdir -p ./files/var/empty";
+    compressImage = false;
     imageBaseName = "ogfx-nixos-sd-image";
   };
 
@@ -24,7 +25,6 @@
     };
   };
 
-  nixpkgs.system = "aarch64-linux";
   boot.loader.grub.enable = false;
   boot.loader.raspberryPi.enable = true;
   boot.loader.raspberryPi.version = 4;
