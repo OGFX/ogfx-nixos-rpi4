@@ -7,12 +7,20 @@
 
   sdImage = {
     firmwareSize = 128;
-    # This is a hack to avoid replicating config.txt from boot.loader.raspberryPi
-    populateFirmwareCommands =
-      "${config.system.build.installBootLoader} ${config.system.build.toplevel} -d ./firmware";
-    # As the boot process is done entirely in the firmware partition.
-    populateRootCommands = "";
+    populateRootCommands = "mkdir -p ./files/var/empty";
     imageBaseName = "ogfx-nixos-sd-image";
+  };
+
+  fileSystems = lib.mkForce {
+    "/boot" = {
+      device = "/dev/disk/by-label/FIRMWARE";
+      fsType = "vfat";
+    };
+
+    "/" = {
+      device = "/dev/disk/by-label/NIXOS_SD";
+      fsType = "ext4";
+    };
   };
 
   nixpkgs.system = "aarch64-linux";
@@ -28,6 +36,7 @@
   networking.networkmanager.enable = true;
 
   services.openssh.enable = true;
+  services.openssh.startWhenNeeded = true;
 
   i18n.defaultLocale = "en_US.UTF-8";
 
