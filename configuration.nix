@@ -7,6 +7,7 @@
 
   sdImage = {
     firmwareSize = 128;
+    populateFirmwareCommands = "${config.system.build.installBootLoader} ${config.system.build.toplevel} -d ./firmware";
     populateRootCommands = "mkdir -p ./files/var/empty";
     imageBaseName = "ogfx-nixos-sd-image";
   };
@@ -43,8 +44,9 @@
   time.timeZone = "Europe/Amsterdam";
 
   environment.systemPackages = with pkgs; [
-    vim nano jack2 jalv gxplugins-lv2 swh_lv2
-    htop emacs tmux
+    vim nano jack2 jalv swh_lv2
+    htop tmux
+    # gxplugins-lv2
   ];
   #  mod-distortion mda_lv2 infamousPlugins
   #  gxmatcheq-lv2 eq10q bshapr fomp rkrlv2
