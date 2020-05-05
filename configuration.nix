@@ -27,13 +27,19 @@
   networking.interfaces.eth0.useDHCP = true;
   networking.networkmanager.enable = true;
 
+  services.openssh.enable = true;
+
   i18n.defaultLocale = "en_US.UTF-8";
 
   time.timeZone = "Europe/Amsterdam";
 
   environment.systemPackages = with pkgs; [
-    vim nano jack2 jalv
+    vim nano jack2 jalv gxplugins-lv2 swh_lv2
+    htop emacs tmux
   ];
+  #  mod-distortion mda_lv2 infamousPlugins
+  #  gxmatcheq-lv2 eq10q bshapr fomp rkrlv2
+  #  zam-plugins 
 
   services.xserver.enable = false;
 
