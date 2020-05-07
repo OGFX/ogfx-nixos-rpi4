@@ -1,4 +1,4 @@
-{ pkgs, ... }: 
+{ config, pkgs, ... }: 
 
 # Umm, figure out if
 # configClone = ./configuration.nix);
@@ -10,8 +10,18 @@ in
 {
   imports = [
     <nixpkgs/nixos/modules/installer/cd-dvd/channel.nix>
+    <nixpkgs/nixos/modules/installer/cd-dvd/sd-image.nix>
     ./configuration.nix
   ];
+
+  sdImage = {
+    firmwareSize = 128;
+    populateFirmwareCommands = "${config.system.build.installBootLoader} ${config.system.build.toplevel} -d ./firmware";
+    populateRootCommands = "mkdir -p ./files/var/empty";
+    compressImage = false;
+    imageBaseName = "ogfx-nixos-sd-image";
+  };
+
 
   boot.postBootCommands =
     ''

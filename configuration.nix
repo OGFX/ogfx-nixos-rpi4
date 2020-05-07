@@ -1,18 +1,6 @@
 { config, lib, pkgs, ... }:
 
 {
-  imports = [
-    <nixpkgs/nixos/modules/installer/cd-dvd/sd-image.nix>
-  ];
-
-  sdImage = {
-    firmwareSize = 128;
-    populateFirmwareCommands = "${config.system.build.installBootLoader} ${config.system.build.toplevel} -d ./firmware";
-    populateRootCommands = "mkdir -p ./files/var/empty";
-    compressImage = false;
-    imageBaseName = "ogfx-nixos-sd-image";
-  };
-
   fileSystems = lib.mkForce {
     "/boot" = {
       device = "/dev/disk/by-label/FIRMWARE";
