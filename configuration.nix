@@ -26,22 +26,12 @@
       bridge_stp_helper
       request_key_helper
       { 
-        name = "4.19.120rt52";
-        patch = builtins.fetchurl "https://www.kernel.org/pub/linux/kernel/projects/rt/4.19/older/patch-4.19.120-rt52.patch.xz";
-        sha256 = "0vm7dpdaspwyccx2lh6sycfcaaiw1439fpnhypm5cya0ymsnz0fj";
+        name = "4.19.94rt39";
+        patch = builtins.fetchurl "https://www.kernel.org/pub/linux/kernel/projects/rt/4.19/older/patch-4.19.94-rt39.patch.xz";
+        sha256 = "5vm7dpdaspwyccx2lh6sycfcaaiw1439fpnhypm5cya0ymsnz0fj";
       }
     ];
   });
-
-  # boot.kernelPackages = pkgs.linuxPackages_rpi4.override { };
-
-  # boot.kernelPatches = [ 
-  #   { 
-  #     name = "4.19.120rt52";
-  #     patch = builtins.fetchurl "https://www.kernel.org/pub/linux/kernel/projects/rt/4.19/older/patch-4.19.120-rt52.patch.xz";
-  #     sha256 = "0vm7dpdaspwyccx2lh6sycfcaaiw1439fpnhypm5cya0ymsnz0fj";
-  #   }
-  # ];
 
   networking.hostName = "ogfx";
   networking.useDHCP = false;
