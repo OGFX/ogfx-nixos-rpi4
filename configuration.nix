@@ -1,6 +1,8 @@
-{ config, lib, pkgs, ... }:
+{ fetchurl, config, lib, pkgs, stdenv, buildPackages, fetchFromGitHub, perl, buildLinux, rpiVersion, ... }:
 
 {
+  nixpkgs.overlays = [ ];
+
   fileSystems = lib.mkForce {
     "/boot" = {
       device = "/dev/disk/by-label/FIRMWARE";
@@ -13,11 +15,26 @@
     };
   };
 
+  boot.consoleLogLevel = lib.mkDefault 7;
   boot.loader.grub.enable = false;
   boot.loader.raspberryPi.enable = true;
   boot.loader.raspberryPi.version = 4;
-  boot.kernelPackages = pkgs.linuxPackages_rpi4;
-  boot.consoleLogLevel = lib.mkDefault 7;
+
+  boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.callPackage pkgs.linux_rpi4.override { tag = "1.20200212"; modDirVersion = "4.19.120rt52"; src =  fetchFromGitHub {
+    owner = "raspberrypi";
+    repo = "linux";
+    rev = "raspberrypi-kernel_1.20200212-1";
+    sha256 = "0l91kb4jjxg4fcp7d2aqm1fj34ns137rys93k907mdgnarcliafs";
+  };  });
+  # boot.kernelPackages = pkgs.linuxPackages_rpi4.override { };
+
+  boot.kernelPatches = [ 
+        { 
+          name = "4.19.120rt52";
+          patch = builtins.fetchurl "https://www.kernel.org/pub/linux/kernel/projects/rt/4.19/older/patch-4.19.120-rt52.patch.xz";
+          sha256 = "0vm7dpdaspwyccx2lh6sycfcaaiw1439fpnhypm5cya0ymsnz0fj";
+        }
+  ];
 
   networking.hostName = "ogfx";
   networking.useDHCP = false;
