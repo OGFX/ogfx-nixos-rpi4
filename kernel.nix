@@ -1,7 +1,7 @@
 { stdenv, lib, buildPackages, fetchFromGitHub, perl, buildLinux, rpiVersion, ... } @ args:
 
 let
-  modDirVersion = "4.19.97";
+  modDirVersion = "4.19.97-rt39";
   tag = "1.20200212";
 in
 lib.overrideDerivation (buildLinux (args // {
