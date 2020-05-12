@@ -3,7 +3,9 @@
 # Umm, figure out if
 # configClone = ./configuration.nix);
 # is enough ;)
-let configClone = pkgs.writeText "configuration.nix" (builtins.readFile ./configuration.nix);
+let 
+  configClone = pkgs.writeText "configuration.nix" (builtins.readFile ./configuration.nix);
+  kernelClone = pkgs.writeText "kernel.nix" (builtins.readFile ./kernel.nix);
 
 in
 
@@ -30,6 +32,10 @@ in
 
       if ! [ -e /etc/nixos/configuration.nix ]; then
         cp ${configClone} /etc/nixos/configuration.nix
+      fi
+
+      if ! [ -e /etc/nixos/kernel.nix ]; then
+        cp ${configClone} /etc/nixos/kernel.nix
       fi
     '';
 

@@ -30,6 +30,13 @@
         patch = builtins.fetchurl "https://www.kernel.org/pub/linux/kernel/projects/rt/4.19/older/patch-4.19.94-rt39.patch.xz";
         sha256 = "5vm7dpdaspwyccx2lh6sycfcaaiw1439fpnhypm5cya0ymsnz0fj";
       }
+      {
+        name = "enable-rt-preempt";
+        patch = null;
+        extraConfig = ''
+          PREEMPT_RT y
+	'';
+      }
     ];
   });
 
