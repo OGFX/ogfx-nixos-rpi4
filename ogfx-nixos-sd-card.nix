@@ -35,7 +35,7 @@ in
       fi
 
       if ! [ -e /etc/nixos/kernel.nix ]; then
-        cp ${configClone} /etc/nixos/kernel.nix
+        cp ${kernelClone} /etc/nixos/kernel.nix
       fi
     '';
 

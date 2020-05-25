@@ -53,9 +53,10 @@
   time.timeZone = "Europe/Amsterdam";
 
   environment.systemPackages = with pkgs; [
-    vim nano jack2 jalv swh_lv2
-    htop tmux
-    # gxplugins-lv2
+    vim nano
+    htop tmux git
+    jack2 jalv
+    guitarix gxplugins-lv2 swh_lv2 calf
   ];
   #  mod-distortion mda_lv2 infamousPlugins
   #  gxmatcheq-lv2 eq10q bshapr fomp rkrlv2
