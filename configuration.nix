@@ -56,7 +56,11 @@
     vim nano
     htop tmux git
     jack2 jalv
-    guitarix gxplugins-lv2 swh_lv2 calf
+    raspberrypi-tools
+    guitarix gxplugins-lv2 
+    swh_lv2 calf
+    mda_lv2 
+    mod-distortion  
   ];
   #  mod-distortion mda_lv2 infamousPlugins
   #  gxmatcheq-lv2 eq10q bshapr fomp rkrlv2
