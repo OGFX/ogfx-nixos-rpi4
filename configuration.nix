@@ -53,7 +53,7 @@
   time.timeZone = "Europe/Amsterdam";
 
   environment.systemPackages = with pkgs; [
-    vim nano
+    vim nano stress
     htop tmux git
     jack2 jalv
     raspberrypi-tools
