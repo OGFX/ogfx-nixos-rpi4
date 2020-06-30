@@ -15,10 +15,11 @@
     };
   };
 
-  boot.consoleLogLevel = lib.mkDefault 7;
   boot.loader.grub.enable = false;
   boot.loader.raspberryPi.enable = true;
   boot.loader.raspberryPi.version = 4;
+
+  hardware.enableRedistributableFirmware = true;
 
   boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.callPackage ./kernel.nix { 
     rpiVersion = 4;  
@@ -40,10 +41,46 @@
     ];
   });
 
+  boot.consoleLogLevel = lib.mkDefault 7;
+
+  services.dnsmasq.enable = true;
+  services.dnsmasq.extraConfig = ''
+    # Bind to only one interface
+    bind-interfaces
+
+    # Choose interface for binding
+    interface=wlan0
+
+    # Specify range of IP addresses for DHCP leasses
+    dhcp-range=192.168.150.100,192.168.150.200
+  '';
+
+  services.hostapd.interface = "wlan0";
+  services.hostapd.ssid = "ogfx";
+  services.hostapd.wpaPassphrase = "omg ogfx";
+
+  networking.interfaces.wlan0.ipv4.addresses = [ { address = "192.168.150.1"; prefixLength = 24; } ];
+
   networking.hostName = "ogfx";
   networking.useDHCP = false;
   networking.interfaces.eth0.useDHCP = true;
   networking.networkmanager.enable = true;
+
+  # Disable firewall to make dnsmasq and hostapd work.
+  # This needs fixing :)
+  networking.firewall.enable = false;
+
+  networking.localCommands = ''
+    echo 1 > /proc/sys/net/ipv4/ip_forward
+    ${pkgs.iptables}/bin/iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+    ${pkgs.iptables}/bin/iptables -A FORWARD -i eth0 -o wlan0 -m state --state RELATED,ESTABLISHED -j ACCEPT
+    ${pkgs.iptables}/bin/iptables -A FORWARD -i wlan0 -o eth0 -j ACCEPT
+  '';
+
+  networking.networkmanager.extraConfig = ''
+    [keyfile]
+    unmanaged-devices=interface-name:wlan0
+  '';
 
   services.openssh.enable = true;
   services.openssh.startWhenNeeded = true;
@@ -53,6 +90,7 @@
   time.timeZone = "Europe/Amsterdam";
 
   environment.systemPackages = with pkgs; [
+    iptables
     vim nano stress
     htop tmux git
     jack2 jalv
