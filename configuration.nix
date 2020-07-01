@@ -55,6 +55,7 @@
     dhcp-range=192.168.150.100,192.168.150.200
   '';
 
+  services.hostapd.enable = true;
   services.hostapd.interface = "wlan0";
   services.hostapd.ssid = "ogfx";
   services.hostapd.wpaPassphrase = "omg ogfx";
@@ -106,9 +107,18 @@
 
   services.xserver.enable = false;
 
+  # Change "hw:USB" to the name of the ALSA pcm device of your
+  # soundcard (see e.g. /proc/asound/cards)
+  services.jack = {
+    jackd = {
+      enable = true;
+      extraOptions = [ "-R" "-P 80" "-d" "alsa" "-d" "hw:USB" ];
+    };
+  };
+
   users.users.ogfx = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" ];
+    extraGroups = [ "wheel" "networkmanager" "jackaudio"];
     initialHashedPassword = "$6$ebhWmP8YjP5H$s/buwRq3YWf1QCSe/jMhybOGfnp1u0S4wysSt5dLuvIKIg966kszvMTC7CCuZ/GxiMkzpxGBwqg66H145nX5D/";
   };
 
