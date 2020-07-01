@@ -94,18 +94,24 @@
     iptables
     vim nano stress
     htop tmux git
-    jack2 jalv
+    jack2 jalv lilv lv2
     raspberrypi-tools
     guitarix gxplugins-lv2 
     swh_lv2 calf
     mda_lv2 
     mod-distortion  
   ];
-  #  mod-distortion mda_lv2 infamousPlugins
-  #  gxmatcheq-lv2 eq10q bshapr fomp rkrlv2
-  #  zam-plugins 
+
+  # These packages would be nice to have, but they
+  # don't build on aarch64-linux yet:
+  # 
+  # mod-distortion mda_lv2 infamousPlugins
+  # gxmatcheq-lv2 eq10q bshapr fomp rkrlv2
+  # zam-plugins 
 
   services.xserver.enable = false;
+
+  sound.enable = true;
 
   # Change "hw:USB" to the name of the ALSA pcm device of your
   # soundcard (see e.g. /proc/asound/cards)

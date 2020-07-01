@@ -17,7 +17,7 @@ in
   ];
 
   sdImage = {
-    firmwareSize = 128;
+    firmwareSize = 512;
     populateFirmwareCommands = "${config.system.build.installBootLoader} ${config.system.build.toplevel} -d ./firmware";
     populateRootCommands = "mkdir -p ./files/var/empty";
     compressImage = false;
