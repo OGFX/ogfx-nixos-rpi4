@@ -1,8 +1,6 @@
 { fetchurl, config, lib, pkgs, stdenv, buildPackages, fetchFromGitHub, perl, buildLinux, rpiVersion, ... }:
 
 {
-  nixpkgs.overlays = [ ];
-
   fileSystems = lib.mkForce {
     "/boot" = {
       device = "/dev/disk/by-label/FIRMWARE";
@@ -14,6 +12,14 @@
       fsType = "ext4";
     };
   };
+
+  nixpkgs.overlays = [
+    (self: super: {
+      ogfx-tools = self.callPackage /home/ogfx/ogfx/ogfx-tools.nix {};
+      ogfx-ui = self.python37Packages.callPackage /home/ogfx/ogfx/ogfx-ui.nix {};
+    })
+  ];
+
 
   boot.loader.grub.enable = false;
   boot.loader.raspberryPi.enable = true;
@@ -42,6 +48,21 @@
   });
 
   boot.consoleLogLevel = lib.mkDefault 7;
+
+  fonts.fontconfig.enable = false;
+
+  hardware.bluetooth.enable = false;
+
+  powerManagement.cpuFreqGovernor = "performance";
+
+  programs.command-not-found.enable = false;
+
+  security.polkit.enable = false;
+
+  environment.variables = {
+    LV2_PATH = "/nix/var/nix/profiles/system/sw/lib/lv2/";
+  };
+
 
   services.dnsmasq.enable = true;
   services.dnsmasq.extraConfig = ''
@@ -92,14 +113,16 @@
 
   environment.systemPackages = with pkgs; [
     iptables
+    raspberrypi-tools
     vim nano stress
     htop tmux git
+
     jack2 jalv lilv lv2
-    raspberrypi-tools
     guitarix gxplugins-lv2 
     swh_lv2 calf
     mda_lv2 
     mod-distortion  
+    ogfx-ui
   ];
 
   # These packages would be nice to have, but they
