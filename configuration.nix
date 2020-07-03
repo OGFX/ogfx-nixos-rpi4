@@ -13,14 +13,6 @@
     };
   };
 
-  nixpkgs.overlays = [
-    (self: super: {
-      ogfx-tools = self.callPackage /home/ogfx/ogfx/ogfx-tools.nix {};
-      ogfx-ui = self.python37Packages.callPackage /home/ogfx/ogfx/ogfx-ui.nix {};
-    })
-  ];
-
-
   boot.loader.grub.enable = false;
   boot.loader.raspberryPi.enable = true;
   boot.loader.raspberryPi.version = 4;
@@ -122,6 +114,8 @@
     swh_lv2 calf
     mda_lv2 
     mod-distortion  
+
+    ogfx-tools
     ogfx-ui
   ];
 
