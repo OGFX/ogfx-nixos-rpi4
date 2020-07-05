@@ -28,11 +28,11 @@ in
 
       if ! [ -e /etc/nixos/initial_copy_done ]; then
     '' 
-        + lib.concatMapStrings (s:"cp ${s} /etc/nixos/$(basename ${(builtins.toString s)}); ") configClones +
+        + (lib.concatMapStrings (s:"cp ${s} /etc/nixos/$(basename ${(builtins.toString s)}); ") configClones) +
     ''
         mkdir -p /home/ogfx/ogfx/
     '' 
-        + lib.concatMapStrings (s:"cp ${s} /home/ogfx/ogfx/$(basename ${(builtins.toString s)}); ") userClones +
+        + (lib.concatMapStrings (s:"cp -r ${s} ${builtins.toString s}; ") userClones) +
     ''
       fi
       touch /etc/nixos/initial_copy_done
