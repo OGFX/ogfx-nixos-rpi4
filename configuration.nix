@@ -109,7 +109,7 @@
     vim nano stress
     htop tmux git
 
-    jack2 jalv lilv lv2
+    jalv lilv lv2
     guitarix gxplugins-lv2 
     swh_lv2 calf
     mda_lv2 

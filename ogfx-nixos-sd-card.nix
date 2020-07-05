@@ -1,12 +1,9 @@
 { config, pkgs, ... }: 
 
-# Umm, figure out if
-# configClone = ./configuration.nix);
-# is enough ;)
 let 
-  configClone = pkgs.writeText "configuration.nix" (builtins.readFile ./configuration.nix);
-  kernelClone = pkgs.writeText "kernel.nix" (builtins.readFile ./kernel.nix);
-  usbDiffClone = pkgs.writeText "usb-lowlatency.diff" (builtins.readFile ./usb-lowlatency.diff);
+  configClone = ./configuration.nix;
+  kernelClone = ./kernel.nix;
+  usbDiffClone = ./usb-lowlatency.diff;
 
 in
 
