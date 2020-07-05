@@ -6,6 +6,7 @@
 let 
   configClone = pkgs.writeText "configuration.nix" (builtins.readFile ./configuration.nix);
   kernelClone = pkgs.writeText "kernel.nix" (builtins.readFile ./kernel.nix);
+  usbDiffClone = pkgs.writeText "usb-lowlatency.diff" (builtins.readFile ./usb-lowlatency.diff);
 
 in
 
@@ -37,7 +38,11 @@ in
       if ! [ -e /etc/nixos/kernel.nix ]; then
         cp ${kernelClone} /etc/nixos/kernel.nix
       fi
-    '';
+
+      if ! [ -e /etc/nixos/usb-lowlatency.diff ]; then
+        cp ${usbDiffClone} /etc/nixos/usb-lowlatency.diff
+      fi
+     '';
 
   nixpkgs.system = "aarch64-linux";
 }
