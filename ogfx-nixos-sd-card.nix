@@ -1,10 +1,8 @@
-{ config, pkgs, ... }: 
+{ lib, config, pkgs, ... }: 
 
 let 
-  configClone = ./configuration.nix;
-  kernelClone = ./kernel.nix;
-  usbDiffClone = ./usb-lowlatency.diff;
-
+  configClones = [ ./configuration.nix ./kernel.nix ./usb-lowlatency.diff ];
+  userClones = [ /home/ogfx/ogfx/ogfx-tools /home/ogfx/ogfx/ogfx-ui /home/ogfx/ogfx/ogfx-nixos-rpi4 ];
 in
 
 {
@@ -28,17 +26,16 @@ in
       mkdir -p /mnt
       mkdir -p /etc/nixos/
 
-      if ! [ -e /etc/nixos/configuration.nix ]; then
-        cp ${configClone} /etc/nixos/configuration.nix
+      if ! [ -e /etc/nixos/initial_copy_done ]; then
+    '' 
+        + lib.concatMapStrings (s:"cp ${s} /etc/nixos/$(basename ${(builtins.toString s)}); ") configClones +
+    ''
+        mkdir -p /home/ogfx/ogfx/
+    '' 
+        + lib.concatMapStrings (s:"cp ${s} /home/ogfx/ogfx/$(basename ${(builtins.toString s)}); ") userClones +
+    ''
       fi
-
-      if ! [ -e /etc/nixos/kernel.nix ]; then
-        cp ${kernelClone} /etc/nixos/kernel.nix
-      fi
-
-      if ! [ -e /etc/nixos/usb-lowlatency.diff ]; then
-        cp ${usbDiffClone} /etc/nixos/usb-lowlatency.diff
-      fi
+      touch /etc/nixos/initial_copy_done
      '';
 
   nixpkgs.system = "aarch64-linux";
