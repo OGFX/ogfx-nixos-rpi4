@@ -2,7 +2,7 @@
 
 let 
   configClones = [ ./configuration.nix ./kernel.nix ./usb-lowlatency.diff ];
-  userClones = [ /home/ogfx/ogfx/ogfx-tools /home/ogfx/ogfx/ogfx-ui /home/ogfx/ogfx/ogfx-nixos-rpi4 ];
+  userClones = [ /home/ogfx/ogfx/ogfx-tools /home/ogfx/ogfx/ogfx-ui /home/ogfx/ogfx/ogfx-nixos-rpi4 /home/ogfx/jack2 ];
 in
 
 {
