@@ -40,6 +40,10 @@
     '';
   });
 
+  boot.extraModprobeConfig = ''
+    options snd-usb-audio max_packs=1 max_packs_hs=1 max_urbs=12 sync_urbs=4 max_queue=1
+  '';
+
   boot.consoleLogLevel = lib.mkDefault 7;
 
   fonts.fontconfig.enable = false;
