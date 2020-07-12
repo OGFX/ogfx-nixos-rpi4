@@ -30,13 +30,14 @@
         sha256 = "5vm7dpdaspwyccx2lh6sycfcaaiw1439fpnhypm5cya0ymsnz0fj";
       }
       {
-        name = "enable-rt-preempt";
-        patch = null;
-        extraConfig = ''
-          PREEMPT_RT y
-	'';
+        name = "usb-lowlatency";
+        patch = ./usb-lowlatency.diff;
+        sha256 = "5vm7dpdaspwyccx2lh6sycfcaaiw1439fpnhypm5cya0ymsnz0fj";
       }
     ];
+    extraConfig = ''
+      PREEMPT_RT_FULL y
+    '';
   });
 
   boot.consoleLogLevel = lib.mkDefault 7;
@@ -104,10 +105,11 @@
   time.timeZone = "Europe/Amsterdam";
 
   environment.systemPackages = with pkgs; [
-    iptables
+    iptables links
     raspberrypi-tools
     vim nano stress
     htop tmux git
+    gdb
 
     jalv lilv lv2
     guitarix gxplugins-lv2 
