@@ -13,11 +13,11 @@
     };
   };
 
+  hardware.enableRedistributableFirmware = true;
+
   boot.loader.grub.enable = false;
   boot.loader.raspberryPi.enable = true;
   boot.loader.raspberryPi.version = 4;
-
-  hardware.enableRedistributableFirmware = true;
 
   boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.callPackage ./kernel.nix { 
     rpiVersion = 4;  
@@ -118,7 +118,7 @@
     jalv lilv lv2
     guitarix gxplugins-lv2 
     swh_lv2 calf
-    mda_lv2 
+    mda_lv2 rkrlv2
     mod-distortion  
 
     ogfx-tools
@@ -147,7 +147,7 @@
 
   users.users.ogfx = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" "jackaudio"];
+    extraGroups = [ "wheel" "networkmanager" "jackaudio" "audio" ];
     initialHashedPassword = "$6$ebhWmP8YjP5H$s/buwRq3YWf1QCSe/jMhybOGfnp1u0S4wysSt5dLuvIKIg966kszvMTC7CCuZ/GxiMkzpxGBwqg66H145nX5D/";
   };
 
