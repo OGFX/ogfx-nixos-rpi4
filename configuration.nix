@@ -66,7 +66,7 @@
     interfaces.wlan0.ipv4.addresses = [ { address = "192.168.150.1"; prefixLength = 24; } ];
     interfaces.eth0.useDHCP = true;
 
-    hostName = "ogfx-dev";
+    hostName = "ogfx";
     useDHCP = false;
     networkmanager.enable = true;
 
@@ -111,7 +111,7 @@
     hostapd = {
       enable = true;
       interface = "wlan0";
-      ssid = "ogfx-dev";
+      ssid = "ogfx";
       wpaPassphrase = "omg it's fx";
     };
 
