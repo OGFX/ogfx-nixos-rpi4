@@ -137,19 +137,30 @@
     };
   };
 
-  systemd.services.ogfx-frontend = {
-    enable = true;
-    description = "The OGFX web frontend";
-    wantedBy = [ "jack" ];
-    serviceConfig = {
-      Type = "exec";
-      User="ogfx";
-      ExecStart = "${pkgs.bash}/bin/bash -l -c \". /etc/profile; ${pkgs.jack2}/bin/jack_wait -w; ${pkgs.ogfx-ui}/bin/ogfx_frontend_server.py\"";
-      # PAMName="ogfx";
-      LimitRTPRIO = 99;
-      LimitMEMLOCK = "infinity";
+  systemd.services = {
+    irq-priority-setup = { 
+      enable = true;
+      wantedBy = [ "multi-user.target" ];
+      serviceConfig = {
+        Type = "exec";
+        ExecStart = "${pkgs.bash}/bin/bash -c \"${pkgs.schedtool}/bin/schedtool -F -p 90 $(${pkgs.procps}/bin/pidof irq/38-xhci_hcd)\"";
+      };
     };
-  };
+
+    ogfx-frontend = {
+      enable = true;
+      description = "The OGFX web frontend";
+      wantedBy = [ "jack.service" ];
+      serviceConfig = {
+        Type = "exec";
+        User="ogfx";
+        ExecStart = "${pkgs.bash}/bin/bash -l -c \". /etc/profile; ${pkgs.jack2}/bin/jack_wait -w; ${pkgs.ogfx-ui}/bin/ogfx_frontend_server.py\"";
+        # PAMName="ogfx";
+        LimitRTPRIO = 99;
+        LimitMEMLOCK = "infinity";
+      };
+    };
+  }; 
 
   environment.systemPackages = with pkgs; [
     vim
@@ -161,6 +172,11 @@
     iptables
     gdb
     raspberrypi-tools
+    stress
+    links2
+    wget
+    git
+    schedtool
 
     borgbackup 
 
