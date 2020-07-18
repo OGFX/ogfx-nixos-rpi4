@@ -128,13 +128,6 @@
         extraOptions = [ "-R" "-P 80" "-d" "alsa" "-p" "128" "-n" "2" "-d" "hw:iXR" ];
       };
     };
-
-    cron = {
-      enable = true;
-      systemCronJobs = [
-        "02 6 * * *  root . /etc/profile; bash /etc/nixos/borg-backup.sh >> /tmp/borg-backup.log 2>&1"
-      ];
-    };
   };
 
   systemd.services = {
@@ -153,14 +146,16 @@
       wantedBy = [ "jack.service" ];
       serviceConfig = {
         Type = "exec";
-        User="ogfx";
-        ExecStart = "${pkgs.bash}/bin/bash -l -c \". /etc/profile; ${pkgs.jack2}/bin/jack_wait -w; ${pkgs.ogfx-ui}/bin/ogfx_frontend_server.py\"";
-        # PAMName="ogfx";
+        User = "ogfx";
+        ExecStart = "${pkgs.bash}/bin/bash -l -c \"${pkgs.jack2}/bin/jack_wait -w; exec ${pkgs.ogfx-ui}/bin/ogfx_frontend_server.py\"";
         LimitRTPRIO = 99;
         LimitMEMLOCK = "infinity";
+        KillMode = "mixed";
+        KillSignal = "SIGINT";
+        TimeoutStopSec = 60;
       };
     };
-  }; 
+  };
 
   environment.systemPackages = with pkgs; [
     vim
@@ -177,8 +172,6 @@
     wget
     git
     schedtool
-
-    borgbackup 
 
     jalv
     lv2
